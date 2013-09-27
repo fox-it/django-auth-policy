@@ -1,0 +1,32 @@
+IDEAS / TODOS
+=============
+
+* Optionally keep a history of passwords (hashed) to prevent password reuse
+
+  password model field has been added.
+
+* Expand docs
+
+* Add example on how to implement Djangos password reset views
+
+* Add example on how to send temporary passwords by email
+
+* Add tests for Django admin code
+
+* Add tests for UserChange tracking
+
+* Add more signals as hooks for additional functionality
+
+* Optionally prevent usage of passwords from a list of common passwords
+  
+  Supply a publicly available list with django_auth_policy?
+
+  Filter this list based on the other policy rules.
+
+* Optionally prevent (case insensitive) username, first_name, last_name and
+  email (before '@' and domainname parts below the TLD) in new passwords
+
+* Optionally restrict domain names of the email addresses of users
+
+* Optionally use different source of random data for temporary password
+  generation
