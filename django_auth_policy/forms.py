@@ -39,7 +39,7 @@ class StrictAuthenticationForm(AuthenticationForm):
                     username, remote_addr)
 
         attempt = LoginAttempt(
-            username=username[:100],
+            username=username,
             source_address=remote_addr,
             hostname=self.request.get_host()[:100],
             successful=False,
