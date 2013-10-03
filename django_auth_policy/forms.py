@@ -45,6 +45,26 @@ class StrictAuthenticationForm(AuthenticationForm):
             successful=False,
             lockout=True)
 
+        if not username:
+            logger.warning(u'Authentication failure, address=%s, '
+                           'no username supplied.',
+                           remote_addr)
+            attempt.save()
+            # FIXME not sure if we need to raise validation error here
+            # because django will already inform the user that the
+            # field is required through other means
+            return self.cleaned_data
+
+        if not password:
+            logger.warning(u'Authentication failure, username=%s, '
+                           'address=%s, no password supplied.',
+                           username, remote_addr)
+            attempt.save()
+            # FIXME not sure if we need to raise validation error here
+            # because django will already inform the user that the
+            # field is required through other means
+            return self.cleaned_data
+
         if locked_username(username):
             logger.warning(u'Authentication failure, username=%s, address=%s, '
                            'username locked', username, remote_addr)
@@ -61,31 +81,30 @@ class StrictAuthenticationForm(AuthenticationForm):
                 self.error_messages['address_locked_out'],
                 'address_locked_out')
 
-        if username and password:
-            self.user_cache = authenticate(username=username,
-                                           password=password)
-            if self.user_cache is None:
-                logger.warning(u'Authentication failure, username=%s, '
-                               'address=%s, invalid authentication.',
-                               username, remote_addr)
-                attempt.save()
-                raise forms.ValidationError(
-                    self.error_messages['invalid_login'] % {
-                        'username': self.username_field.verbose_name},
-                    code='invalid_login')
-            else:
-                disabled_ids = disable_expired_users()
-                if self.user_cache.pk in disabled_ids:
-                    self.user_cache.is_active = False
+        self.user_cache = authenticate(username=username,
+                                       password=password)
+        if self.user_cache is None:
+            logger.warning(u'Authentication failure, username=%s, '
+                           'address=%s, invalid authentication.',
+                           username, remote_addr)
+            attempt.save()
+            raise forms.ValidationError(
+                self.error_messages['invalid_login'] % {
+                    'username': self.username_field.verbose_name},
+                code='invalid_login')
 
-                if not self.user_cache.is_active:
-                    logger.warning(u'Authentication failure, username=%s, '
-                                   'address=%s, user inactive.',
-                                   username, remote_addr)
-                    attempt.save()
-                    raise forms.ValidationError(
-                        self.error_messages['inactive'],
-                        code='inactive')
+        disabled_ids = disable_expired_users()
+        if self.user_cache.pk in disabled_ids:
+            self.user_cache.is_active = False
+
+        if not self.user_cache.is_active:
+            logger.warning(u'Authentication failure, username=%s, '
+                            'address=%s, user inactive.',
+                            username, remote_addr)
+            attempt.save()
+            raise forms.ValidationError(
+                self.error_messages['inactive'],
+                code='inactive')
 
         # Authentication was successful
         logger.info(u'Authentication success, username=%s, address=%s',
@@ -100,6 +119,7 @@ class StrictAuthenticationForm(AuthenticationForm):
                                     lockout=True).update(lockout=False)
         LoginAttempt.objects.filter(source_address=remote_addr,
                                     lockout=True).update(lockout=False)
+
         return self.cleaned_data
 
 
