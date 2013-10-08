@@ -6,7 +6,7 @@ package = 'django-auth-policy'
 
 setup(
     name=package,
-    version='0.2',
+    version='0.3',
     description='Enforces a couple of common authentication policies for the '
                 'Django web framework.',
     author='Fox-IT B.V.',
