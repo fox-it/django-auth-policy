@@ -22,4 +22,4 @@ see ``django_auth_policy/settings.py``.
 Documentation is not available yet but will be made available in the "docs"
 directory.
 
-To run the test suite run ``run-tests.py``
+To run the test suite run ``run-tests.py`` or ``tox``.
