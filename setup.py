@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='django-auth-policy',
-    version='0.2',
+    version='0.3',
     description='Enforces a couple of common authentication policies for the '
                 'Django web framework.',
     author='Fox-IT B.V.',
