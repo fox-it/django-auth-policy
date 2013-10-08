@@ -2,16 +2,14 @@
 
 from setuptools import setup
 
-package = 'django_auth_policy'
-
 setup(
-    name=package,
+    name='django-auth-policy',
     version='0.2',
     description='Enforces a couple of common authentication policies for the '
                 'Django web framework.',
     author='Fox-IT B.V.',
     license='BSD',
-    packages=[package],
+    packages=['django_auth_policy'],
     install_requires=['Django>=1.5'],
     classifiers=[
         'Development Status :: 3 - Alpha',
