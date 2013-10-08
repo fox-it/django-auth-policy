@@ -38,6 +38,9 @@ class StrictAuthenticationForm(AuthenticationForm):
         logger.info('Authentication attempt, username=%s, address=%s',
                     username, remote_addr)
 
+        if not username and not password:
+            return self.cleaned_data
+
         attempt = LoginAttempt(
             username=username,
             source_address=remote_addr,
@@ -50,9 +53,6 @@ class StrictAuthenticationForm(AuthenticationForm):
                            'no username supplied.',
                            remote_addr)
             attempt.save()
-            # FIXME not sure if we need to raise validation error here
-            # because django will already inform the user that the
-            # field is required through other means
             return self.cleaned_data
 
         if not password:
@@ -60,9 +60,6 @@ class StrictAuthenticationForm(AuthenticationForm):
                            'address=%s, no password supplied.',
                            username, remote_addr)
             attempt.save()
-            # FIXME not sure if we need to raise validation error here
-            # because django will already inform the user that the
-            # field is required through other means
             return self.cleaned_data
 
         if locked_username(username):
