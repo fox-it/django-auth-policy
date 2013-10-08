@@ -78,6 +78,7 @@ class StrictAuthenticationForm(AuthenticationForm):
                 self.error_messages['address_locked_out'],
                 'address_locked_out')
 
+        disable_expired_users()
         self.user_cache = authenticate(username=username,
                                        password=password)
         if self.user_cache is None:
@@ -89,10 +90,6 @@ class StrictAuthenticationForm(AuthenticationForm):
                 self.error_messages['invalid_login'] % {
                     'username': self.username_field.verbose_name},
                 code='invalid_login')
-
-        disabled_ids = disable_expired_users()
-        if self.user_cache.pk in disabled_ids:
-            self.user_cache.is_active = False
 
         if not self.user_cache.is_active:
             logger.warning(u'Authentication failure, username=%s, '
