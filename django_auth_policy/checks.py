@@ -15,12 +15,11 @@ logger = logging.getLogger(__name__)
 def disable_expired_users():
     """ Disable users that have been expired
 
-    Run inside the authentication form or backend,
-    and before calling django.contrib.auth.login
+    Run inside the authentication form or backend, and before calling
+    django.contrib.auth.authenticate
 
-    Returns a list with the primary keys of the disabled users.
-
-    Reactivate user by setting is_active to True and last_login to now.
+    Reactivate user by setting is_active to True and last_login to
+    now.
     """
     if dap_settings.INACTIVE_USERS_EXPIRY is None:
         return None
@@ -37,11 +36,7 @@ def disable_expired_users():
         # Send signal to be used to alert admins
         signals.user_expired.send(sender=user, user=user)
 
-    user_ids = list(expired.values_list('pk', flat=True))
-
     expired.update(is_active=False)
-
-    return user_ids
 
 
 def locked_username(username):

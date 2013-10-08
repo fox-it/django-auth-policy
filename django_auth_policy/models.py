@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.translation import ugettext_lazy as _
@@ -46,7 +47,9 @@ class LoginAttemptManager(models.Manager):
 
 
 class LoginAttempt(models.Model):
-    username = models.CharField(_('username'), max_length=100, db_index=True)
+    _username_length = get_user_model()._meta.get_field(
+        get_user_model().USERNAME_FIELD).max_length
+    username = models.CharField(_('username'), max_length=_username_length, db_index=True)
     source_address = models.GenericIPAddressField(_('source address'),
                                                   protocol='both',
                                                   db_index=True)

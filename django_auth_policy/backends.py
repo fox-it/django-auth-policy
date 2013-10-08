@@ -16,13 +16,8 @@ class StrictModelBackend(ModelBackend):
         if username and locked_username(username):
             return None
 
+        disable_expired_users()
         user = super(StrictModelBackend, self
                      ).authenticate(username=username, password=password,
                                     **kwargs)
-
-        if user is not None and user.is_authenticated():
-            disabled_pks = disable_expired_users()
-            if user.pk in disabled_pks:
-                user.is_active = False
-
         return user
