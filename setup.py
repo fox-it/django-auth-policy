@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-package = 'django_auth_policy'
+package = 'django-auth-policy'
 
 setup(
     name=package,
