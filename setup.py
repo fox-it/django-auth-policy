@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
+import sys
 from setuptools import setup
+
+
+install_requires = ['Django>=1.5']
+if sys.hexversion < 0x02070000:
+    install_requires.append('ordereddict>=1.1')
+
 
 setup(
     name='django-auth-policy',
@@ -10,7 +17,7 @@ setup(
     author='Fox-IT B.V.',
     license='BSD',
     packages=['django_auth_policy'],
-    install_requires=['Django>=1.5'],
+    install_requires=install_requires,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
