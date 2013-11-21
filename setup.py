@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import sys
 from setuptools import setup
 
 
 install_requires = ['Django>=1.5']
-if sys.hexversion < 0x02070000:
+try:
+    from collections import OrderedDict
+except ImportError:
     install_requires.append('ordereddict>=1.1')
 
 
