@@ -1,5 +1,5 @@
-.. image:: https://secure.travis-ci.org/fox-it/django_auth_policy.png?branch=master
-   :target: http://travis-ci.org/fox-it/django_auth_policy
+.. image:: https://secure.travis-ci.org/fox-it/django-auth-policy.png?branch=master
+   :target: http://travis-ci.org/fox-it/django-auth-policy
 
 Django Auth Policy is a set of tools to enforce various authentication
 policies when using the Django Web Framework (http://www.djangoproject.com/).
